@@ -20,13 +20,12 @@ export class AddAircraftComponent {
     this.setChangeValidate()
   }
 
-
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'email': [null, [Validators.required, Validators.email], this.checkInUseEmail],
-      'name': [null, Validators.required],
-      'password': [null, [Validators.required, this.checkPassword]],
-      'description': [null, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
+      'make': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(128)]],
+      'model': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(128)]],
+      'location': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+      'registeration': [null, [Validators.required, this.checkRegisteration]],
       'validate': ''
     });
   }
@@ -45,40 +44,20 @@ export class AddAircraftComponent {
     )
   }
 
-  
-  checkPassword(control:any) {
-    let enteredPassword = control.value
-    let passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-    return (!passwordCheck.test(enteredPassword) && enteredPassword) ? { 'requirements': true } : null;
-  }
-
-  get name() {
-    return this.formGroup.get('name') as FormControl
-  }
-
-  checkInUseEmail(control:any) {
-    // mimic http database access
-    let db = ['jack@torchwood.com'];
-    return new Observable(observer => {
-      setTimeout(() => {
-        let result = (db.indexOf(control.value) !== -1) ? { 'alreadyInUse': true } : null;
-        observer.next(result);
-        observer.complete();
-      }, 4000)
-    })
-  }
-
-  getErrorEmail() {
-    return this.formGroup.get('email')?.hasError('required') ? 'Field is required' :
-      this.formGroup.get('email')?.hasError('pattern') ? 'Not a valid emailaddress' :
-        this.formGroup.get('email')?.hasError('alreadyInUse') ? 'This emailaddress is already in use' : '';
+  checkRegisteration(control:any) {
+    let enteredRegisteration = control.value
+    let registerationCheck = /^([a-zA-Z]{1,2}-[a-zA-Z]{1,5})$/;
+    return (!registerationCheck.test(enteredRegisteration) && enteredRegisteration) ? { 'requirements': true } : null;
   }
 
   getErrorPassword() {
-
-   
     return this.formGroup.get('password')?.hasError('required') ? 'Field is required (at least eight characters, one uppercase letter and one number)' :
       this.formGroup.get('password')?.hasError('requirements') ? 'Password needs to be at least eight characters, one uppercase letter and one number' : '';
+  }
+
+  getErrorRegisteration() {
+    return this.formGroup.get('registeration')?.hasError('required') ? 'Field is required (at least eight characters, one uppercase letter and one number)' :
+      this.formGroup.get('registeration')?.hasError('requirements') ? 'Invalid registeration format.Format: 1-5 characters for suffix after a 1-2 character prefix, separated by a hyphen' : '';
   }
 
   onSubmit(post:any) {
