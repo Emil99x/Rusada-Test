@@ -17,9 +17,16 @@ namespace Rusada.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateSighting(AircraftDto sighting)
+        public async Task<IActionResult> Post(AircraftDto sighting)
         {
             var result = await _aircraftSightingService.AddSightingAsync(sighting);
+            return Ok(result);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result =  await _aircraftSightingService.GetAllAsync();
             return Ok(result);
         }
     }

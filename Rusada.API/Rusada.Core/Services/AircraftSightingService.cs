@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Rusada.Domain;
 
 namespace Rusada.Core.Services
@@ -29,11 +30,24 @@ namespace Rusada.Core.Services
                 Registration = aircraftDto.Registration,
                 DateTime = aircraftDto.DateTime,
             };
-            
+
             _rusadaDbContext.Aircrafts.Add(aircraft);
             await _rusadaDbContext.SaveChangesAsync();
-
             return aircraftDto;
+        }
+
+        public async Task<List<AircraftDto>> GetAllAsync()
+        {
+            var result = await _rusadaDbContext.Aircrafts.Select(x => new AircraftDto()
+            {
+                Location = x.Location,
+                Model = x.Model,
+                Make = x.Make,
+                Registration = x.Registration,
+                DateTime = x.DateTime
+            }).ToListAsync();
+
+            return result;
         }
     }
 }

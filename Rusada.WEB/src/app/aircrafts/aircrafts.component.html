@@ -1,0 +1,41 @@
+<div class="container">
+<h1 class="mt-3">Aircraft List</h1>
+<div class="d-flex justify-content-end mt-3">
+  <a [routerLink]="['/aircrafts/add']" mat-raised-button color="accent">Add Aircraft </a>
+</div>
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filter">
+      </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="make">
+      <th mat-header-cell *matHeaderCellDef>Make</th>
+      <td mat-cell *matCellDef="let element">{{ element.make }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="model">
+      <th mat-header-cell *matHeaderCellDef>Model</th>
+      <td mat-cell *matCellDef="let element">{{ element.model }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="registeration">
+      <th mat-header-cell *matHeaderCellDef>Registeration</th>
+      <td mat-cell *matCellDef="let element">{{ element.registeration }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef>Location</th>
+      <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>
