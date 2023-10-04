@@ -15,7 +15,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastsContainer } from './core/components/toasts-container/toasts-container.component';
 import { ListFilterPipe } from './core/pipes/ListFilterPipe';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +23,7 @@ import { ListFilterPipe } from './core/pipes/ListFilterPipe';
     AircraftAddComponent,
     ToastsContainer,
     ListFilterPipe
+
   ],
   imports: [
     BrowserModule,

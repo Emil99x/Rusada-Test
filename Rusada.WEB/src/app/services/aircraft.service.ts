@@ -20,4 +20,14 @@ export class AircraftService {
     return this.http
       .get<GetAircraftSightRequest[]>('https://localhost:44396/api/AircraftSighting');
   }
+
+  deleteAircraft(id:number): Observable<boolean> {
+    return this.http
+      .delete<boolean>(`https://localhost:44396/api/AircraftSighting?id=${id}`);
+  }
+
+  updateAircraft(): Observable<GetAircraftSightRequest[]> {
+    return this.http
+      .get<GetAircraftSightRequest[]>('https://localhost:44396/api/AircraftSighting');
+  }
 }

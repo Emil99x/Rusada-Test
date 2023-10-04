@@ -35,5 +35,12 @@ namespace Rusada.API.Controllers
             var result = await _aircraftSightingService.GetAllAsync();
             return Ok(result);
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _aircraftSightingService.DeleteAircraftAsync(id);
+            return Ok(result);
+        }
     }
 }

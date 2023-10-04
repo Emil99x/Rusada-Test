@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation.modal/confirmation-modal.component';
 import { GetAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
+import { ToastService } from 'src/app/services/toast-service';
 
 @Component({
   selector: 'app-aircraft-list',
@@ -11,17 +14,21 @@ import { AircraftService } from 'src/app/services/aircraft.service';
 export class AircraftListComponent implements OnInit {
   data!: GetAircraftSightRequest[];
   allData!: GetAircraftSightRequest[];
-  searchTerm: string ='';
+
+  searchTerm: string = '';
   filter = new FormControl('', { nonNullable: true });
 
-  constructor(private aircraftService: AircraftService) {}
-
+  constructor(
+    private aircraftService: AircraftService,
+    private modalService: NgbModal,
+    private toastService : ToastService
+  ) {}
 
   ngOnInit(): void {
     this.aircraftService.getAircrafts().subscribe({
       next: (res) => {
         this.data = res;
-		this.allData = res;
+        this.allData = res;
       },
     });
   }
@@ -36,10 +43,25 @@ export class AircraftListComponent implements OnInit {
     });
   }
 
-  edit(data : GetAircraftSightRequest){
+  edit(data: GetAircraftSightRequest) {
     console.log(data);
   }
-  remove(data : GetAircraftSightRequest){
-    console.log(data);
+
+  delete(id: any) {
+
+    this.aircraftService.deleteAircraft(id).subscribe({
+      next: (res) => {
+       this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });
+      },error: (res) =>{
+        this.toastService.show('error occured', { classname: 'bg-danger text-light', delay: 2000 });
+      }
+    })
+  }
+
+  remove(data: GetAircraftSightRequest) {
+
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.message = 'Are you really want to delete this';
+    modalRef.componentInstance.onSubmit.subscribe((event : any) => this.delete(data.id))
   }
 }

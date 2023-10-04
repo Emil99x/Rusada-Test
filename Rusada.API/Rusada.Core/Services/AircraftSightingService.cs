@@ -37,7 +37,6 @@ namespace Rusada.Core.Services
             return aircraftDto;
         }
 
-
         public async Task<AircraftDto> Update(AircraftDto aircraftDto, IFormFile? image)
         {
             var existing = await _rusadaDbContext.Aircrafts.FirstOrDefaultAsync(x => x.Id == aircraftDto.Id);
@@ -110,6 +109,17 @@ namespace Rusada.Core.Services
             return result;
         }
 
+        public async Task<bool> DeleteAircraftAsync(int id)
+        {
+            var recordToDelete = await _rusadaDbContext.Aircrafts.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
+            if (recordToDelete == null) return false;
+            _rusadaDbContext.Aircrafts.Remove(recordToDelete);
+            await _rusadaDbContext.SaveChangesAsync();
+            return true;
+
+        }
+
+        #region Private
 
         private async Task<string> UploadImageAsync(IFormFile file, string model, int aircraftId, AircraftImage? existingImage)
         {
@@ -187,5 +197,7 @@ namespace Rusada.Core.Services
             var fileName = $"{model}{ext}";
             return fileName;
         }
+
+        #endregion
     }
 }
