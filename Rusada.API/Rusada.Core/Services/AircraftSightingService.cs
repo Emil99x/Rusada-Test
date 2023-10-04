@@ -96,7 +96,7 @@ namespace Rusada.Core.Services
 
         public async Task<List<AircraftDto>> GetAllAsync()
         {
-            var result = await _rusadaDbContext.Aircrafts.Select(x => new AircraftDto()
+            var result = await _rusadaDbContext.Aircrafts.Where(x => !x.Deleted).Select(x => new AircraftDto()
             {
                 Id = x.Id,
                 Location = x.Location,

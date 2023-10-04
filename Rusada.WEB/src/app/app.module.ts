@@ -3,22 +3,27 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbAlertModule, NgbDatepickerModule, NgbModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbDatepickerModule, NgbModule, NgbTimepickerModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
 import { AircraftListComponent } from './features/aircraft/aircraft-list/aircraft-list.component';
 import { AircraftAddComponent } from './features/aircraft/aircraft-add/aircraft-add.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
 import { FormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe, JsonPipe, NgFor } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastsContainer } from './core/components/toasts-container/toasts-container.component';
+import { ListFilterPipe } from './core/pipes/ListFilterPipe';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     AircraftListComponent,
     AircraftAddComponent,
+    ToastsContainer,
+    ListFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -30,9 +35,13 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     JsonPipe,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbTypeaheadModule,
+    DecimalPipe,
+    AsyncPipe,
+    NgFor
   ],
-  providers: [],
+  providers: [DecimalPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

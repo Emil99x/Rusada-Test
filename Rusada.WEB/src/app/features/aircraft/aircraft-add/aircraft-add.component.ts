@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AddAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
+import { ToastService } from 'src/app/services/toast-service';
+
 
 export interface AircraftSight {
   Id?: number;
@@ -27,7 +29,7 @@ export class AircraftAddComponent {
   titleAlert: string = 'This field is required';
 	model!: NgbDateStruct;
 
-  constructor(private formBuilder: FormBuilder, private aircraftService: AircraftService) { }
+  constructor(private formBuilder: FormBuilder, private aircraftService: AircraftService, private toastService : ToastService) { }
 
   ngOnInit() {
     this.createForm();
@@ -91,8 +93,7 @@ export class AircraftAddComponent {
   }
 
   onSubmit(post:any) {
-    console.log(post)
-    debugger;
+
     var data: AddAircraftSightRequest = {
       make: post.make,
       model: post.model,
@@ -100,10 +101,12 @@ export class AircraftAddComponent {
       location: post.location,
       dateTime: new Date(post.date.year, post.date.month-1, post.date.day,  post.time.hour,  post.time.minute, 0),
     };
-    console.log(data,"this is the data")
+
     this.aircraftService.addAircraft(data).subscribe({
-      next: (res)=>{console.log("sucess")},
-      error: (error) =>{console.log("error")}
+      next: (res)=>{ this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });},
+      error: (error) =>{ this.toastService.show('error', { classname: 'bg-danger text-light', delay: 2000 });}
     });
   }
+
+
 }

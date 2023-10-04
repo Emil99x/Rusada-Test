@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AddAircraftSightRequest } from '../models/add-aircraft-sight-request.model';
+import { AddAircraftSightRequest, GetAircraftSightRequest } from '../models/add-aircraft-sight-request.model';
 
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -14,5 +14,10 @@ export class AircraftService {
   addAircraft(model: AddAircraftSightRequest): Observable<void> {
     return this.http
       .post<void>('https://localhost:44396/api/aircraftSighting', model);
+  }
+
+  getAircrafts(): Observable<GetAircraftSightRequest[]> {
+    return this.http
+      .get<GetAircraftSightRequest[]>('https://localhost:44396/api/AircraftSighting');
   }
 }

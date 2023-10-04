@@ -5,3 +5,12 @@ export interface AddAircraftSightRequest{
     location: string;
     dateTime: Date;
 }
+
+export interface GetAircraftSightRequest{
+    make: string;
+    model: string;
+    registration: string;
+    location: string;
+    dateTime: Date;
+    Id: number
+}
