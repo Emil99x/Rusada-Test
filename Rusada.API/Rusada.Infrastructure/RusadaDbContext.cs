@@ -13,6 +13,7 @@ namespace Rusada.Infrastructure
         }
 
         public DbSet<Aircraft> Aircrafts { get; set; }
+        public DbSet<AircraftImage> AircraftImages { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

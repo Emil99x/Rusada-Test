@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rusada.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rusada.Infrastructure;
 namespace Rusada.Infrastructure.Migrations
 {
     [DbContext(typeof(RusadaDbContext))]
-    partial class RusadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231004064637_aircraft-img-nullable")]
+    partial class aircraftimgnullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

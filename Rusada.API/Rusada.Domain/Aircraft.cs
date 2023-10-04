@@ -8,6 +8,7 @@ namespace Rusada.Domain
         public string Model { get; set; }
         public string Registration { get; set; }
         public string Location { get; set; }
+        public string? ImageUrl { get; set; }
         public DateTime DateTime { get; set; }
     }
 }

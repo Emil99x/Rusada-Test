@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rusada.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rusada.Infrastructure;
 namespace Rusada.Infrastructure.Migrations
 {
     [DbContext(typeof(RusadaDbContext))]
-    partial class RusadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231003191528_rm-fk-aircraft")]
+    partial class rmfkaircraft
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,6 +47,7 @@ namespace Rusada.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -81,9 +85,6 @@ namespace Rusada.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AircraftId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Base64Logo")
                         .IsRequired()
@@ -123,20 +124,7 @@ namespace Rusada.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AircraftId");
-
                     b.ToTable("AircraftImages");
-                });
-
-            modelBuilder.Entity("Rusada.Domain.BaseEntities.AircraftImage", b =>
-                {
-                    b.HasOne("Rusada.Domain.Aircraft", "Aircraft")
-                        .WithMany()
-                        .HasForeignKey("AircraftId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Aircraft");
                 });
 #pragma warning restore 612, 618
         }

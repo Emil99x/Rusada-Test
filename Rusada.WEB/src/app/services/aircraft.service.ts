@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { AddAircraftSightRequest } from '../models/add-aircraft-sight-request.model';
+
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AircraftService {
+  apiBaseUrl: string = '';
+  constructor(private http: HttpClient) {}
 
-  private readonly API_URL = 'https://localhost:44396/'; // TODO : move into env 
-
-  constructor(private httpClient: HttpClient) {}
+  addAircraft(model: AddAircraftSightRequest): Observable<void> {
+    return this.http
+      .post<void>('https://localhost:44396/api/aircraftSighting', model);
+  }
 }
