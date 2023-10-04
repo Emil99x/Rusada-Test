@@ -48,10 +48,10 @@ export class AircraftListComponent implements OnInit {
   }
 
   delete(id: any) {
-
     this.aircraftService.deleteAircraft(id).subscribe({
       next: (res) => {
-       this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });
+        this.ngOnInit();
+       this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 }); 
       },error: (res) =>{
         this.toastService.show('error occured', { classname: 'bg-danger text-light', delay: 2000 });
       }

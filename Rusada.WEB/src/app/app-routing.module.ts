@@ -6,6 +6,7 @@ import { AircraftAddComponent } from './features/aircraft/aircraft-add/aircraft-
 const routes: Routes = [
   { path: 'aircrafts', component: AircraftListComponent },
   { path: 'aircrafts/add', component: AircraftAddComponent },
+  { path: '**', component: AircraftListComponent }
  
 ];
 

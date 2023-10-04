@@ -1,6 +1,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AddAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
@@ -29,7 +30,7 @@ export class AircraftAddComponent {
   titleAlert: string = 'This field is required';
 	model!: NgbDateStruct;
 
-  constructor(private formBuilder: FormBuilder, private aircraftService: AircraftService, private toastService : ToastService) { }
+  constructor(private formBuilder: FormBuilder, private aircraftService: AircraftService, private toastService : ToastService, private router: Router ) { }
 
   ngOnInit() {
     this.createForm();
@@ -103,7 +104,10 @@ export class AircraftAddComponent {
     };
 
     this.aircraftService.addAircraft(data).subscribe({
-      next: (res)=>{ this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });},
+      next: (res)=>{ 
+        this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });
+        this.router.navigate(['aircrafts']);
+      },
       error: (error) =>{ this.toastService.show('error', { classname: 'bg-danger text-light', delay: 2000 });}
     });
   }
