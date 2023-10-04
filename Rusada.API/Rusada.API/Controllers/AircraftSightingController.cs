@@ -15,11 +15,31 @@ namespace Rusada.API.Controllers
             _aircraftSightingService = aircraftSightingService;
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> CreateSighting(AircraftDto sighting)
+        public async Task<IActionResult> Post(AircraftDto sighting)
         {
             var result = await _aircraftSightingService.AddSightingAsync(sighting);
+            return Ok(result);
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult> Put([FromForm]AircraftDto sighting, IFormFile? image)
+        {
+            var result = await _aircraftSightingService.Update(sighting, image);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _aircraftSightingService.GetAllAsync();
+            return Ok(result);
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _aircraftSightingService.DeleteAircraftAsync(id);
             return Ok(result);
         }
     }
