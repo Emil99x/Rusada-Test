@@ -24,6 +24,5 @@ import { ToastService } from 'src/app/services/toast-service';
 })
 export class ToastsContainer {
   constructor(public toastService: ToastService) {}
-
   isTemplate(toast:any) { return toast.textOrTpl instanceof TemplateRef; }
 }

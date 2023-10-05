@@ -36,6 +36,13 @@ namespace Rusada.API.Controllers
             return Ok(result);
         }
         
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _aircraftSightingService.GetById(id);
+            return Ok(result);
+        }
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -12,5 +12,6 @@ export interface GetAircraftSightRequest{
     registration: string;
     location: string;
     dateTime: Date;
-    id: number
+    id: number,
+    imagePath:string
 }

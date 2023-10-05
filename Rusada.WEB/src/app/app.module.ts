@@ -14,6 +14,7 @@ import { AsyncPipe, DecimalPipe, JsonPipe, NgFor } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastsContainer } from './core/components/toasts-container/toasts-container.component';
 import { ListFilterPipe } from './core/pipes/ListFilterPipe';
+import { AircraftEditComponent } from './features/aircraft/aircraft-edit/aircraft-edit.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ListFilterPipe } from './core/pipes/ListFilterPipe';
     AircraftListComponent,
     AircraftAddComponent,
     ToastsContainer,
-    ListFilterPipe
+    ListFilterPipe,
+    AircraftEditComponent
 
   ],
   imports: [

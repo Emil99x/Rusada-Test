@@ -1,0 +1,8 @@
+.image-preview {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.date-time {
+    display: flex;
+}

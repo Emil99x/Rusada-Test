@@ -10,5 +10,6 @@ namespace Rusada.Domain
         public string Location { get; set; }
         public string? ImageUrl { get; set; }
         public DateTime DateTime { get; set; }
+        public AircraftImage AircraftImage { get; set; }
     }
 }

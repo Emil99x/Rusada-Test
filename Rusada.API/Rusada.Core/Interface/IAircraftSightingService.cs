@@ -10,5 +10,6 @@ namespace Rusada.Core.Interface
         Task<AircraftDto> Update(AircraftDto aircraftDto, IFormFile? image);
         Task<List<AircraftDto>> GetAllAsync();
         Task<bool> DeleteAircraftAsync(int id);
+        Task<AircraftDto> GetById(int id);
     }
 }

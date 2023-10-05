@@ -1,70 +1,58 @@
-
-import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { AddAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AircraftService } from 'src/app/services/aircraft.service';
 import { ToastService } from 'src/app/services/toast-service';
 
-
-export interface AircraftSight {
-  Id?: number;
-  make: string;
-  model: string;
-  registeration: string;
-  location: string;
-  dateTime: Date;
-}
-
-
 @Component({
-  selector: 'app-aircraft-add',
-  templateUrl: './aircraft-add.component.html',
-  styleUrls: ['./aircraft-add.component.css']
+  selector: 'app-aircraft-edit',
+  templateUrl: './aircraft-edit.component.html',
+  styleUrls: ['./aircraft-edit.component.css'],
 })
-export class AircraftAddComponent {
+export class AircraftEditComponent implements OnInit {
+
+  airCraftId?: string;
   aircraftForm!: FormGroup;
-  post: any = '';
+  url :any = '';
 
-  titleAlert: string = 'This field is required';
-	model!: NgbDateStruct;
-
-  constructor(private formBuilder: FormBuilder, private aircraftService: AircraftService, private toastService : ToastService, private router: Router ) { }
-
-  ngOnInit() {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private aircraftService: AircraftService,
+    private formBuilder: FormBuilder,
+     private toastService : ToastService
+  ) {
     this.createForm();
-    this.setChangeValidate()
   }
-
-
   createForm() {
     this.aircraftForm = this.formBuilder.group({
       'make': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(128)]],
       'model': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(128)]],
       'location': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-      'registeration': [null, [Validators.required, this.checkRegisteration]],
+      'registration': [null, [Validators.required, this.checkRegisteration]],
       'date': [null, [Validators.required]],
       'time': '',
-      // 'image': '',
-      // 'validate': ''
+      'image': '',
+
     });
   }
 
-
-
-  setChangeValidate() {
-    this.aircraftForm.get('validate')?.valueChanges.subscribe(
-      (validate) => {
-        if (validate == '1') {
-          this.aircraftForm.get('name')?.setValidators([Validators.required, Validators.minLength(3)]);
-          this.titleAlert = "You need to specify at least 3 characters";
-        } else {
-          this.aircraftForm.get('name')?.setValidators(Validators.required);
-        }
-        this.aircraftForm.get('name')?.updateValueAndValidity();
-      }
-    )
+  ngOnInit(): void {
+    this.airCraftId = this.activatedRoute.snapshot.paramMap.get('id')!;
+    this.aircraftService.getAircraftById( this.airCraftId).subscribe({
+      next: (res) => {
+        this.aircraftForm.setValue({
+          make :res.make,
+          model :res.model,
+          registration :res.registration,
+           location :res.location,
+           date :{year : 2018 , month:10 , day : 2},
+           time:{hour : 13 , minute:20 , second :0},
+           image :''
+        });
+        this.url = res.imagePath;
+        console.log(res);
+      },
+    });
   }
 
   checkRegisteration(control:any) {
@@ -83,15 +71,27 @@ export class AircraftAddComponent {
       this.aircraftForm.get('registeration')?.hasError('requirements') ? 'Invalid registeration format.Format: 1-5 characters for suffix after a 1-2 character prefix, separated by a hyphen' : '';
   }
 
+  onSelectFile(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.url = event.target?.result;
+      }
+    }
+  }
+
   onSubmit(post:any) {
-    debugger
-    var data: AddAircraftSightRequest = {
-      make: post.make,
-      model: post.model,
-      registration: post.registeration,
-      location: post.location,
-      dateTime: new Date(post.date.year, post.date.month-1, post.date.day,  post.time.hour,  post.time.minute, 0),
-    };
+
+    // var data: AddAircraftSightRequest = {
+    //   make: post.make,
+    //   model: post.model,
+    //   registration: post.registeration,
+    //   location: post.location,
+    //   dateTime: new Date(post.date.year, post.date.month-1, post.date.day,  post.time.hour,  post.time.minute, 0),
+    // };
 
     // this.aircraftService.addAircraft(data).subscribe({
     //   next: (res)=>{ 
@@ -101,6 +101,4 @@ export class AircraftAddComponent {
     //   error: (error) =>{ this.toastService.show('error', { classname: 'bg-danger text-light', delay: 2000 });}
     // });
   }
-
-
 }

@@ -30,4 +30,9 @@ export class AircraftService {
     return this.http
       .get<GetAircraftSightRequest[]>('https://localhost:44396/api/AircraftSighting');
   }
+
+  getAircraftById(id:string): Observable<GetAircraftSightRequest> {
+    return this.http
+      .get<GetAircraftSightRequest>(`https://localhost:44396/api/AircraftSighting/${id}`);
+  }
 }

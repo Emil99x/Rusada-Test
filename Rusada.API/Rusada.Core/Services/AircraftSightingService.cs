@@ -21,7 +21,6 @@ namespace Rusada.Core.Services
             _rusadaDbContext = rusadaDbContext;
             _configuration = configuration;
         }
-
         public async Task<AircraftDto> AddSightingAsync(AircraftDto aircraftDto)
         {
             var aircraft = new Aircraft()
@@ -36,7 +35,6 @@ namespace Rusada.Core.Services
             await _rusadaDbContext.SaveChangesAsync();
             return aircraftDto;
         }
-
         public async Task<AircraftDto> Update(AircraftDto aircraftDto, IFormFile? image)
         {
             var existing = await _rusadaDbContext.Aircrafts.FirstOrDefaultAsync(x => x.Id == aircraftDto.Id);
@@ -73,7 +71,6 @@ namespace Rusada.Core.Services
             await _rusadaDbContext.SaveChangesAsync();
             return aircraftDto;
         }
-
         public async Task<AircraftImageDto> GetAircraftImageAsync(Guid key, string filename)
         {
             var image = await _rusadaDbContext.AircraftImages.FirstOrDefaultAsync(x => x.Key == key && x.FileName == filename);
@@ -92,7 +89,6 @@ namespace Rusada.Core.Services
                 Base64Logo = image.Base64Logo
             };
         }
-
         public async Task<List<AircraftDto>> GetAllAsync()
         {
             var result = await _rusadaDbContext.Aircrafts.Where(x => !x.Deleted).Select(x => new AircraftDto()
@@ -108,7 +104,6 @@ namespace Rusada.Core.Services
 
             return result;
         }
-
         public async Task<bool> DeleteAircraftAsync(int id)
         {
             var recordToDelete = await _rusadaDbContext.Aircrafts.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
@@ -117,6 +112,23 @@ namespace Rusada.Core.Services
             await _rusadaDbContext.SaveChangesAsync();
             return true;
 
+        }
+        public async Task<AircraftDto> GetById(int id)
+        {
+            var result = await _rusadaDbContext.Aircrafts
+                .Where(x => !x.Deleted && x.Id==id)
+                .Select(x => new AircraftDto()
+            {
+                Id = x.Id,
+                Location = x.Location,
+                Model = x.Model,
+                Make = x.Make,
+                Registration = x.Registration,
+                DateTime = x.DateTime,
+                ImagePath = x.ImageUrl,
+            }).FirstOrDefaultAsync();
+
+            return result;
         }
 
         #region Private

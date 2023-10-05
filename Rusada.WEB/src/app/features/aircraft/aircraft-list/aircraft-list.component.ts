@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation.modal/confirmation-modal.component';
 import { GetAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
@@ -21,10 +23,15 @@ export class AircraftListComponent implements OnInit {
   constructor(
     private aircraftService: AircraftService,
     private modalService: NgbModal,
-    private toastService : ToastService
+    private toastService : ToastService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.getAircraftData();
+  }
+
+  getAircraftData(){
     this.aircraftService.getAircrafts().subscribe({
       next: (res) => {
         this.data = res;
@@ -41,16 +48,16 @@ export class AircraftListComponent implements OnInit {
         val.registration.includes(event.target.value)
       );
     });
-  }
+  } 
 
   edit(data: GetAircraftSightRequest) {
-    console.log(data);
+    this.router.navigate(['/aircrafts/edit',data.id]);
   }
 
   delete(id: any) {
     this.aircraftService.deleteAircraft(id).subscribe({
       next: (res) => {
-        this.ngOnInit();
+      this.getAircraftData();
        this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 }); 
       },error: (res) =>{
         this.toastService.show('error occured', { classname: 'bg-danger text-light', delay: 2000 });
