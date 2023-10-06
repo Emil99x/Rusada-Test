@@ -5,9 +5,8 @@
     <a [routerLink]="['/aircrafts/add']" class="btn btn-primary" >Add Aircraft</a>
   </div>
     <div class="mb-3 row">
-      <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
       <div class="col-xs-3 col-sm-auto">
-        <input id="table-filtering-search" class="form-control" type="text"  [(ngModel)]="searchTerm" (input)="search($event)" />
+        <input id="table-filtering-search" placeholder="Search here " class="form-control" type="text"  [(ngModel)]="searchTerm" (input)="search($event)" />
       </div>
     </div>
   <table class="table table-striped">

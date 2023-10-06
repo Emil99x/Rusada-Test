@@ -3,7 +3,7 @@ export interface AddAircraftSightRequest{
     model: string;
     registration: string;
     location: string;
-    dateTime: Date;
+    dateTime: string;
 }
 
 export interface GetAircraftSightRequest{
@@ -14,4 +14,14 @@ export interface GetAircraftSightRequest{
     dateTime: Date;
     id: number,
     imagePath:string
+}
+
+export interface UpdateAircraftSightRequest{
+    make: string;
+    model: string;
+    registration: string;
+    location: string;
+    dateTime: Date;
+    id: number,
+    imagePath ?:string
 }

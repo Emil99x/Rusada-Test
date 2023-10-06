@@ -1,7 +1,7 @@
 <div class="container">
   <h3 class="mt-4 mb-5">Add Aircraft Sight</h3>
 
-  <form [formGroup]="aircraftForm" (ngSubmit)="onSubmit(aircraftForm.value)">
+  <form autocomplete="off"  [formGroup]="aircraftForm" (ngSubmit)="onSubmit(aircraftForm.value)">
 
     <div class="form-group">
         <label class="form-label" for="make">Make</label>
@@ -31,24 +31,18 @@
             {{ getErrorRegisteration() }}
         </span>
     </div>
-
     <div class="form-group">
         <label  class="form-label" for="dateTime">Date Time</label>
-        <div class="input-group">
-            <input id="date" class="form-control" placeholder="yyyy-mm-dd" name="dp"  formControlName="date" ngbDatepicker #d="ngbDatepicker" />
+       <div class="date-time">
+        <div class="input-group me-2">
+            <input  id="date" class="form-control" placeholder="yyyy-mm-dd" name="dp"  formControlName="date" ngbDatepicker #d="ngbDatepicker" />
             <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
         </div>
         <div class="input-group">
             <ngb-timepicker id="time"  class="form-control" formControlName="time" ></ngb-timepicker>
         </div>
+       </div>
     </div>
-
-    <!-- <div class="form-group">
-        <label  class="form-label" for="image">Image</label>
-        <input id="image" type="file" formControlName="image" class="form-control"  (change)="onSelectFile($event)">
-
-        <img [src]="url" height="200"> <br/>
-    </div> -->
 
     <div class="form-element mt-3">
         <button type="submit" class="btn btn-primary" [disabled]="!aircraftForm.valid">Add</button>

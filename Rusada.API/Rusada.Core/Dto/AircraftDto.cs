@@ -10,7 +10,6 @@
         public string? ImagePath { get; set; }
         public DateTime DateTime { get; set; }
 
-        public AircraftImageDto AircraftImageDto { get; set; }
     }
 
     public class AircraftImageDto

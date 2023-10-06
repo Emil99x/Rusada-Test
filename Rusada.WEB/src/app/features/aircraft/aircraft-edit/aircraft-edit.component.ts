@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AddAircraftSightRequest, UpdateAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
 import { ToastService } from 'src/app/services/toast-service';
 
@@ -11,15 +12,17 @@ import { ToastService } from 'src/app/services/toast-service';
 })
 export class AircraftEditComponent implements OnInit {
 
-  airCraftId?: string;
+  airCraftId!: string;
   aircraftForm!: FormGroup;
   url :any = '';
+  imageFile!: File | null;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private aircraftService: AircraftService,
-    private formBuilder: FormBuilder,
-     private toastService : ToastService
+     private activatedRoute: ActivatedRoute,
+     private aircraftService: AircraftService,
+     private formBuilder: FormBuilder,
+     private toastService : ToastService,
+     private router: Router
   ) {
     this.createForm();
   }
@@ -40,13 +43,14 @@ export class AircraftEditComponent implements OnInit {
     this.airCraftId = this.activatedRoute.snapshot.paramMap.get('id')!;
     this.aircraftService.getAircraftById( this.airCraftId).subscribe({
       next: (res) => {
+        let date =new Date(res.dateTime);
         this.aircraftForm.setValue({
           make :res.make,
           model :res.model,
           registration :res.registration,
            location :res.location,
-           date :{year : 2018 , month:10 , day : 2},
-           time:{hour : 13 , minute:20 , second :0},
+           date :{year :date.getFullYear() , month:date.getMonth()+1 , day : date.getDay()+1},
+           time:{hour : date.getHours() , minute: date.getMinutes() , second :0},
            image :''
         });
         this.url = res.imagePath;
@@ -54,7 +58,10 @@ export class AircraftEditComponent implements OnInit {
       },
     });
   }
-
+  removeImg(){
+    this.url = '';
+    this.imageFile = null;
+  }
   checkRegisteration(control:any) {
     let enteredRegisteration = control.value
     let registerationCheck = /^([a-zA-Z]{1,2}-[a-zA-Z]{1,5})$/;
@@ -72,10 +79,12 @@ export class AircraftEditComponent implements OnInit {
   }
 
   onSelectFile(event:any) {
+    debugger
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]); // read file as data url
+      this.imageFile=event.target.files[0];
 
       reader.onload = (event) => { // called once readAsDataURL is completed
         this.url = event.target?.result;
@@ -85,20 +94,21 @@ export class AircraftEditComponent implements OnInit {
 
   onSubmit(post:any) {
 
-    // var data: AddAircraftSightRequest = {
-    //   make: post.make,
-    //   model: post.model,
-    //   registration: post.registeration,
-    //   location: post.location,
-    //   dateTime: new Date(post.date.year, post.date.month-1, post.date.day,  post.time.hour,  post.time.minute, 0),
-    // };
+    var data: UpdateAircraftSightRequest = {
+      make: post.make,
+      model: post.model,
+      registration: post.registration,
+      location: post.location,
+      id:+this.airCraftId ,
+      dateTime: new Date(post.date.year, post.date.month-1, post.date.day,  post.time.hour,  post.time.minute, 0),
+    };
 
-    // this.aircraftService.addAircraft(data).subscribe({
-    //   next: (res)=>{ 
-    //     this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });
-    //     this.router.navigate(['aircrafts']);
-    //   },
-    //   error: (error) =>{ this.toastService.show('error', { classname: 'bg-danger text-light', delay: 2000 });}
-    // });
+    this.aircraftService.updateAircraft(data,this.imageFile).subscribe({
+      next: (res)=>{ 
+        this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });
+        this.router.navigate(['aircrafts']);
+      },
+      error: (error) =>{ this.toastService.show('error', { classname: 'bg-danger text-light', delay: 2000 });}
+    });
   }
 }

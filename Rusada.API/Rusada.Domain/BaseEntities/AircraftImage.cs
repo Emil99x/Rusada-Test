@@ -1,6 +1,6 @@
 ﻿namespace Rusada.Domain.BaseEntities;
 
-public class AircraftImage : BaseEntityWithSoftDelete
+public class AircraftImage : BaseEntityWithAudit
 {
     public int AircraftId { get; set; }
     public string Base64Logo { get; set; }
