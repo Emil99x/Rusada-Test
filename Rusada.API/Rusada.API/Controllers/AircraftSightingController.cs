@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rusada.Core.Dto;
 using Rusada.Core.Interface;
 
@@ -30,6 +32,7 @@ namespace Rusada.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = GoogleDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAll()
         {
             var result = await _aircraftSightingService.GetAllAsync();

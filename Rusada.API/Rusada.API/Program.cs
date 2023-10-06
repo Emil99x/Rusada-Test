@@ -20,6 +20,28 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// builder.Services.AddAuthentication(op =>
+//     {
+//         // op.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+//         // op.DefaultChallengeScheme = GoogleDefaults.AuthorizationEndpoint;
+//         // op.DefaultScheme = GoogleDefaults.AuthorizationEndpoint;
+//         op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//         op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//         op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//     })
+//     .AddJwtBearer(options =>
+//     {
+//         options.TokenValidationParameters = new TokenValidationParameters
+//         {
+//             ValidateIssuer = true,
+//             ValidateAudience = false,
+//             ValidateLifetime = true,
+//             ValidateIssuerSigningKey = false,
+//             ValidIssuer = "https://accounts.google.com", // Replace with your issuer
+//             // ValidAudience = "m", // Replace with your audience
+//             // IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(""))
+//         };
+//     });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +58,7 @@ app.UseCors(options =>
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
 });
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

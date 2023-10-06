@@ -8,3 +8,8 @@ export function formatDate(date: Date) {
   //2023-10-03T06:12:39.962
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
 }
+
+
+export function decodeJWTToken(token:any){
+  return JSON.parse(atob(token.split(".")[1]));
+}

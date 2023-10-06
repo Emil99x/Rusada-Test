@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastsContainer } from './core/components/toasts-container/toasts-container.component';
 import { ListFilterPipe } from './core/pipes/ListFilterPipe';
 import { AircraftEditComponent } from './features/aircraft/aircraft-edit/aircraft-edit.component';
+import { LoginComponent } from './core/components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AircraftEditComponent } from './features/aircraft/aircraft-edit/aircraf
     AircraftAddComponent,
     ToastsContainer,
     ListFilterPipe,
-    AircraftEditComponent
+    AircraftEditComponent,
+    LoginComponent
 
   ],
   imports: [
