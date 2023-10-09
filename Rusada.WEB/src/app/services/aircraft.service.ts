@@ -39,7 +39,6 @@ export class AircraftService {
     data: any,
     image: any
   ): Observable<UpdateAircraftSightRequest> {
-    debugger;
     const formData = new FormData();
     formData.append('id', data.id);
     formData.append('make', data.make);

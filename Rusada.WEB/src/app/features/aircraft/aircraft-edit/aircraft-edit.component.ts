@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AddAircraftSightRequest, UpdateAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
+import { UpdateAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
 import { ToastService } from 'src/app/services/toast-service';
 

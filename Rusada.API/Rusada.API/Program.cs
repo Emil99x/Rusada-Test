@@ -10,7 +10,6 @@ using Serilog.Events;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services
     .AddApplicationPersistenceServices(builder.Configuration, builder.Environment)
     .AddApplicationCoreDependencies();
@@ -18,7 +17,6 @@ builder.Services
 
 builder.Services.AddControllers(config =>
 {
-   // config.Filters.Add<ModalValidatorFilter>();
     config.Filters.Add<ResponseMappingFilter>();
 });
 

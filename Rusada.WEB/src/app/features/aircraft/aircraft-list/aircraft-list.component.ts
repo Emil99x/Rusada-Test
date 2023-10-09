@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation.modal/confirmation-modal.component';
 import { GetAircraftSightRequest } from 'src/app/models/add-aircraft-sight-request.model';
 import { AircraftService } from 'src/app/services/aircraft.service';
