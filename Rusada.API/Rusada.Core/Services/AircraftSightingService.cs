@@ -22,7 +22,7 @@ namespace Rusada.Core.Services
             _configuration = configuration;
         }
 
-        public async Task<AircraftDto> AddSightingAsync(AircraftDto aircraftDto)
+        public async Task<IResponse<AircraftDto>> AddSightingAsync(AircraftDto aircraftDto)
         {
             var aircraft = new Aircraft()
             {
@@ -33,16 +33,17 @@ namespace Rusada.Core.Services
                 DateTime = aircraftDto.DateTime,
             };
             _rusadaDbContext.Aircrafts.Add(aircraft);
+            aircraftDto.Id = aircraft.Id;
             await _rusadaDbContext.SaveChangesAsync();
-            return aircraftDto;
+            return ResponseFactory.Success(aircraftDto);
         }
 
-        public async Task<AircraftDto> Update(AircraftDto aircraftDto, IFormFile? image)
+        public async Task<IResponse<AircraftDto>> UpdateAsync(AircraftDto aircraftDto, IFormFile? image)
         {
             var existing = await _rusadaDbContext.Aircrafts.FirstOrDefaultAsync(x => x.Id == aircraftDto.Id);
             if (existing is null)
             {
-                throw new RusdaException("Invalid record", HttpStatusCode.BadRequest);
+                return ResponseFactory.Error<AircraftDto>("Invalid record for update", HttpStatusCode.BadRequest);
             }
 
             if (image != null)
@@ -73,29 +74,29 @@ namespace Rusada.Core.Services
 
             _rusadaDbContext.Aircrafts.Update(existing);
             await _rusadaDbContext.SaveChangesAsync();
-            return aircraftDto;
+            return ResponseFactory.Success(aircraftDto);
         }
 
-        public async Task<AircraftImageDto> GetAircraftImageAsync(Guid key, string filename)
+        public async Task<IResponse<AircraftImageDto>> GetAircraftImageAsync(Guid key, string filename)
         {
             var image = await _rusadaDbContext.AircraftImages.FirstOrDefaultAsync(x => x.Key == key && x.FileName == filename);
 
             if (image == null)
             {
-                throw new RusdaException($"Invalid image", HttpStatusCode.NotFound);
+                return ResponseFactory.Error<AircraftImageDto>("Invalid image", HttpStatusCode.BadRequest);
             }
 
-            return new AircraftImageDto()
+            return ResponseFactory.Success(new AircraftImageDto()
             {
                 Key = image.Key,
                 Path = image.Path,
                 ContentType = image.ContentType,
                 FileName = image.FileName,
                 Base64Logo = image.Base64Logo
-            };
+            });
         }
 
-        public async Task<List<AircraftDto>> GetAllAsync()
+        public async Task<IResponse<List<AircraftDto>>> GetAllAsync()
         {
             var result = await _rusadaDbContext.Aircrafts.Where(x => !x.Deleted).Select(x => new AircraftDto()
             {
@@ -108,13 +109,13 @@ namespace Rusada.Core.Services
                 ImagePath = x.ImageUrl
             }).ToListAsync();
 
-            return result;
+            return ResponseFactory.Success(result);
         }
 
-        public async Task<bool> DeleteAircraftAsync(int id)
+        public async Task<IResponse<bool>> DeleteAircraftAsync(int id)
         {
             var recordToDelete = await _rusadaDbContext.Aircrafts.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
-            if (recordToDelete == null) return false;
+            if (recordToDelete == null) return ResponseFactory.Success(false);
             _rusadaDbContext.Aircrafts.Remove(recordToDelete);
 
             var existingImage = await _rusadaDbContext.AircraftImages.FirstOrDefaultAsync(x => x.AircraftId == id);
@@ -124,10 +125,10 @@ namespace Rusada.Core.Services
             }
 
             await _rusadaDbContext.SaveChangesAsync();
-            return true;
+            return ResponseFactory.Success(true);
         }
 
-        public async Task<AircraftDto> GetById(int id)
+        public async Task<IResponse<AircraftDto>> GetByIdAsync(int id)
         {
             var result = await _rusadaDbContext.Aircrafts
                 .Where(x => !x.Deleted && x.Id == id)
@@ -142,7 +143,7 @@ namespace Rusada.Core.Services
                     ImagePath = x.ImageUrl,
                 }).FirstOrDefaultAsync();
 
-            return result;
+            return ResponseFactory.Success<AircraftDto>(result);
         }
 
         #region Private

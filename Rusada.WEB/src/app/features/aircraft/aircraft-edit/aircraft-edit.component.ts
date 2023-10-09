@@ -79,7 +79,6 @@ export class AircraftEditComponent implements OnInit {
   }
 
   onSelectFile(event:any) {
-    debugger
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
@@ -103,6 +102,23 @@ export class AircraftEditComponent implements OnInit {
       dateTime: new Date(post.date.year, post.date.month-1, post.date.day,  post.time.hour,  post.time.minute, 0),
     };
 
+    var d = new Date(
+      post.date.year,
+      post.date.month - 1,
+      post.date.day,
+      post.time.hour,
+      post.time.minute,
+      0
+    );
+
+    if (d.getTime() > Date.now()) {
+      this.toastService.show(
+        'Error : Date must be a valid datetime in the past',
+        { classname: 'bg-danger text-light', delay: 2000 }
+      );
+      return;
+    } 
+    
     this.aircraftService.updateAircraft(data,this.imageFile).subscribe({
       next: (res)=>{ 
         this.toastService.show('success', { classname: 'bg-success text-light', delay: 2000 });

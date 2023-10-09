@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Rusada.Core.Common.Interfaces;
 using Rusada.Core.Dto;
 
 namespace Rusada.Core.Interface
 {
     public interface IAircraftSightingService
     {
-        Task<AircraftDto> AddSightingAsync(AircraftDto aircraftDto);
-        Task<AircraftImageDto> GetAircraftImageAsync(Guid key, string filename);
-        Task<AircraftDto> Update(AircraftDto aircraftDto, IFormFile? image);
-        Task<List<AircraftDto>> GetAllAsync();
-        Task<bool> DeleteAircraftAsync(int id);
-        Task<AircraftDto> GetById(int id);
+        Task<IResponse<AircraftDto>> AddSightingAsync(AircraftDto aircraftDto);
+        Task<IResponse<AircraftImageDto>> GetAircraftImageAsync(Guid key, string filename);
+        Task<IResponse<AircraftDto>> UpdateAsync(AircraftDto aircraftDto, IFormFile? image);
+        Task<IResponse<List<AircraftDto>>> GetAllAsync();
+        Task<IResponse<bool>> DeleteAircraftAsync(int id);
+        Task<IResponse<AircraftDto>> GetByIdAsync(int id);
     }
 }

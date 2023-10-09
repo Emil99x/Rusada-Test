@@ -6,7 +6,7 @@ namespace Rusada.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AircraftSightingController : ControllerBase
+    public class AircraftSightingController : BaseController
     {
         private readonly IAircraftSightingService _aircraftSightingService;
 
@@ -19,35 +19,35 @@ namespace Rusada.API.Controllers
         public async Task<IActionResult> Post(AircraftDto sighting)
         {
             var result = await _aircraftSightingService.AddSightingAsync(sighting);
-            return Ok(result);
+            return ResponseResult(result);
         }
-        
+
         [HttpPut]
-        public async Task<IActionResult> Put([FromForm]AircraftDto sighting, IFormFile? image)
+        public async Task<IActionResult> Put([FromForm] AircraftDto sighting, IFormFile? image)
         {
-            var result = await _aircraftSightingService.Update(sighting, image);
-            return Ok(result);
+            var result = await _aircraftSightingService.UpdateAsync(sighting, image);
+            return ResponseResult(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _aircraftSightingService.GetAllAsync();
-            return Ok(result);
+            return ResponseResult(result);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _aircraftSightingService.GetById(id);
-            return Ok(result);
+            var result = await _aircraftSightingService.GetByIdAsync(id);
+            return ResponseResult(result);
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _aircraftSightingService.DeleteAircraftAsync(id);
-            return Ok(result);
+            return ResponseResult(result);
         }
     }
 }

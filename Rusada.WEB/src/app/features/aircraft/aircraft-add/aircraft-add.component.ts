@@ -117,8 +117,6 @@ export class AircraftAddComponent {
   }
 
   onSubmit(post: any) {
-    debugger;
-
     var d = new Date(
       post.date.year,
       post.date.month - 1,

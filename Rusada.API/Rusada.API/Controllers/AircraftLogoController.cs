@@ -7,7 +7,7 @@ namespace Rusada.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AircraftLogoController : ControllerBase
+    public class AircraftLogoController : BaseController
     {
         private readonly IAircraftSightingService _aircraftSightingService;
 
@@ -22,12 +22,10 @@ namespace Rusada.API.Controllers
         public async Task<ActionResult> GetClientLogo(Guid key, string fileName)
         {
             var file = await _aircraftSightingService.GetAircraftImageAsync(key, fileName);
-            
-            var bytes = Convert.FromBase64String(file.Base64Logo);
-            var result = File(bytes, file.ContentType);
+            var bytes = Convert.FromBase64String(file.Data.Base64Logo);
+            var result = File(bytes, file.Data.ContentType);
             result.EnableRangeProcessing = true;
             result.EntityTag = Microsoft.Net.Http.Headers.EntityTagHeaderValue.Any;
-
             return result;
         }
     }

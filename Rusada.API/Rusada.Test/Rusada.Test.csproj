@@ -10,6 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FakeItEasy" Version="7.4.0" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -28,6 +31,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rusada.Core\Rusada.Core.csproj" />
+    <ProjectReference Include="..\Rusada.Infrastructure\Rusada.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+ </ItemGroup>
 
 </Project>
