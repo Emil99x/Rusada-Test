@@ -1,21 +1,13 @@
 # Rusada-Test
 Web application to assist plane spotters in logging their sightings .
 
-# Project Name
-
-A brief description of your project.
-
 ## Table of Contents
 
-- [Project Overview](#project-overview)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
   - [Backend](#backend)
   - [Frontend](#frontend)
 
-## Project Overview
-
-Provide an overview of your project. Explain what it does, why it's useful, and any other relevant information.
 
 ### Features
 
